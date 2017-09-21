@@ -9,13 +9,26 @@
     const handleResponse = (xhr, parseResponse) => {
       const content = document.querySelector('#content');
       
+      console.dir(xhr.getResponseHeader('etag'));
+
+      console.dir(xhr.status);
     };
 
     const requestUpdate = (e, userForm) => {
       const url = userForm.querySelector('#urlField').value;
       const method = userForm.querySelector('#methodSelect').value;
       
-
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, url);
+      xhr.setRequestHeader('Accept', 'application/json');
+      if(method === 'get'){
+        xhr.onload = () => handleResponse(xhr, true);
+      } else {
+        xhr.onload = () => handleResponse(xhr, false);
+      }
+      xhr.send()
+      e.preventDefault();
+      return false;
     };
 
 
